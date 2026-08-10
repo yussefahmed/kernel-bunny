@@ -1,0 +1,42 @@
+{
+  "name": "KernelBunny — Python, C++17 and CUDA",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "args": {
+      "USER_UID": "1000",
+      "USER_GID": "1000"
+    }
+  },
+  "runArgs": [
+    "--device=nvidia.com/gpu=all"
+  ],
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "CUDAARCHS": "86",
+    "TORCH_CUDA_ARCH_LIST": "8.6",
+    "LD_LIBRARY_PATH": "/usr/lib/x86_64-linux-gnu/nvidia/current:/usr/local/cuda/lib64"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "charliermarsh.ruff",
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "nvidia.nsight-vscode-edition"
+      ],
+      "settings": {
+        "cmake.generator": "Ninja",
+        "cmake.configureSettings": {
+          "CMAKE_CXX_STANDARD": "17",
+          "CMAKE_CUDA_ARCHITECTURES": "86"
+        },
+        "python.defaultInterpreterPath": "${containerWorkspaceFolder}/.venv/bin/python",
+        "python.terminal.activateEnvironment": true
+      }
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/verify-toolchain.sh"
+}
